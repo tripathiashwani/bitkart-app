@@ -5,7 +5,7 @@ from .models import(
     Cart,
     OrderPlaced
 )
-
+#admin registration
 @admin.register(Customer)
 class CustomerModelAdmin(admin.ModelAdmin):
     list_display=['id','user','name','locality','city','zipcode','state']
