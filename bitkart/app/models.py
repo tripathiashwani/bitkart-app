@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from datetime import datetime
 
 STATE_CHOICES = (
     ("Andaman & Nicobar Islands", "Andaman & Nicobar Islands"),
@@ -80,9 +81,13 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
+    @property
+    def total_cost(self):
+        return self.quantity*self.product.discounted_price
 
 
-STATUS_COICES = (
+
+STATUS_CHOICES = (
     ("Accepted", "Accepted"),
     ("Packed", "Packed"),
     ("On the Way", "On the Way"),
@@ -96,5 +101,5 @@ class OrderPlaced(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    status = models.CharField(max_length=50, choices=STATUS_COICES, default="Pending")
-    ordered_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="Pending")
+    ordered_date = models.DateTimeField(default=datetime.now)

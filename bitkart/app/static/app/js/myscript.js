@@ -22,16 +22,51 @@ $('#slider1, #slider2, #slider3,#slider4').owlCarousel({
     }
 })
 
-$('.plus-cart').click(function()){
-    var id=$(this).attr("pid").tostring();
+$('.plus-cart').click(function(){
+    var id=$(this).attr("pid").toString();
+    var eml=this.parentNode.children[2]
     $.ajax({
         type:"GET",
         url:"/pluscart",
         data:{
-            prod_id=id
+            prod_id:id
         },
         success:function(data){
-            console.log(data)
+            eml.innerText=data.quantity
+            document.getElementById("total_amt").innerText=data.total_amount
+            document.getElementById("total").innerText=data.total
         }
     })
-}
+})
+$('.minus-cart').click(function(){
+    var id=$(this).attr("pid").toString();
+    var eml=this.parentNode.children[2]
+    $.ajax({
+        type:"GET",
+        url:"/minuscart",
+        data:{
+            prod_id:id
+        },
+        success:function(data){
+            eml.innerText=data.quantity
+            document.getElementById("total_amt").innerText=data.total_amount
+            document.getElementById("total").innerText=data.total
+        }
+    })
+})
+$('.remove-cart').click(function(){
+    var id=$(this).attr("pid").toString();
+    var eml=this
+    $.ajax({
+        type:"GET",
+        url:"/removecart",
+        data:{
+            prod_id:id
+        },
+        success:function(data){
+            document.getElementById("total_amt").innerText=data.total_amount
+            document.getElementById("total").innerText=data.total
+            eml.parentNode.parentNode.parentNode.parentNode.remove()
+        }
+    })
+})
